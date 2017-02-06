@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
     <style>
         body {
             margin-top: 60px
@@ -54,17 +54,20 @@
 
     <div class="row">
         <div class="col-md-4">
-            <h2>Current Temperature</h2> The last recorded reading on device {{ latest_reading.deviceid }} was:
+            <h2>Current Data</h2> The last recorded reading on device {{ latest_reading.deviceid }} was:
             <table>
                 <thead>
                     <tr>
                         <th>Temperature</th>
+                        <th>Humidity</th>   <!-- Added -->
                         <th>Time</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ latest_reading.temperature | number }}&deg;C</td><td>{{ latest_reading.eventtime | date : 'medium' }}</td>
+                        <td>{{ latest_reading.temperature | number }}&deg;C</td>
+                        <td>{{ latest_reading.humidity | number }}%</td>    <!-- Added -->
+                        <td>{{ latest_reading.eventtime | date : 'medium' }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -77,19 +80,22 @@
 
         </div>
         <div class="col-md-4">
-            <h2>Temperature History</h2>
+            <h2>Data History</h2>
             <div ng-show="temperatures.length > 0">
                 <h4>Most recent {{ temperatures.length }} readings </h4>
             <table>
                 <thead>
                     <tr>
                         <th>Temperature</th>
+                        <th>Humidity</th>
                         <th>Time</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="t in temperatures">
-                        <td>{{ t.temperature | number }}&deg;C</td><td>{{ t.eventtime | date : 'medium' }}</td>
+                        <td>{{ t.temperature | number }}&deg;C</td>
+                        <td>{{ t.humidity | number}}%</td>
+                        <td>{{ t.eventtime | date : 'medium' }}</td>
                     </tr>
                 </tbody>
             </table> 
@@ -113,6 +119,13 @@
                 };
             
                 $http.get('/api/alerts').success(function(data) {
+                    //TODO: Fix if data is not null alert
+                    // if(data){   
+                    //     $http.post('/api/command/', {command: 1});      
+                    // } else {
+                    //     $http.post('/api/command/', {command: 0});
+                    // }
+                    
                     $scope.latest_alerts = data.reverse(); 
                 });
             
@@ -123,8 +136,10 @@
                             $scope.temperatures.push({
                                 deviceid: x.deviceid._,
                                 temperature: x.temperaturereading._,
+                                humidity: x.humidity._,
                                 eventtime:  x.eventtime._
                             });
+                            //$scope.temperatures.push(x);
                             $scope.temperatures.reverse();
                         }); 
                         

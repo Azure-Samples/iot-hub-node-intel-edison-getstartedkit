@@ -55,12 +55,12 @@ app.get('/api/alerts', function(req, res) {
 
 app.get('/api/temperatures', function(req, res) {
     var query = new azure.TableQuery()
-        .select(['eventtime', 'temperaturereading', 'deviceid'])
+        .select(['eventtime', 'temperaturereading', 'humidity', 'deviceid'])
         .where('PartitionKey eq ?', deviceId);
     tableSvc.queryEntities(storageTable, query, null, function(err, result, response) {
         res.json(result.entries.slice(-10));
-    })
-})
+    });
+});
 
 var completedCallback = function(err, res) {
     if (err) { console.log(err); }
