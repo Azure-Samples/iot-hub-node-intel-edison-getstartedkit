@@ -1,10 +1,8 @@
----
-services: iot-hub, stream-analytics, event-hubs, web-apps, documentdb, storage-accounts
-platforms: yocto, node
-author: hegate
----
+
 
 # Get Started with Microsoft Azure IoT Starter Kit - Intel Edison
+
+**Note: this article has been archived and it is not longer updated. Instructions may not be totally up to date.**
 
 This page contains technical information to help you get familiar with Azure IoT using the Azure IoT Starter Kit - Intel Edison. You will find two tutorials that will walk you through different scenarios. The first tutorial will show you how to connect your Azure IoT Starter kit to our Remote Monitoring preconfigured solution from Azure IoT Suite. In the second tutorial, you will leverage Azure IoT services to create your own IoT solution.
 
